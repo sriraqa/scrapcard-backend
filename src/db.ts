@@ -5,6 +5,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = process.env.ATLAS_URI || "";
 
 let usersCollection: any;
+let scrapcardCollection: any;
 
 const client = new MongoClient(uri, {
     serverApi: {
@@ -21,6 +22,7 @@ async function connectToDatabase() {
         await db.command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
         usersCollection = db.collection('users');
+        scrapcardCollection = db.collection('scrapcards');
     } catch (e) {
         console.error(e);
     }
@@ -33,4 +35,11 @@ function getUsersCollection() {
     return usersCollection;
 }
 
-export { connectToDatabase, getUsersCollection };
+function getScrapCardCollection() {
+    if (!scrapcardCollection) {
+        throw new Error('Database not initialized. Call connectToDatabase first.');
+    }
+    return scrapcardCollection;
+}
+
+export { connectToDatabase, getUsersCollection, getScrapCardCollection };

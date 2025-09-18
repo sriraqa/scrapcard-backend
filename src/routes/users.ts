@@ -4,6 +4,7 @@ import { SCUser } from '../types';
 const router = express.Router();
 
 import { getUsersCollection } from '../db';
+import { ObjectId } from 'mongodb';
 
 // Create user
 router.post('/', async (req, res) => {
@@ -54,6 +55,17 @@ router.delete('/', async (req, res) => {
         console.error(err);
         res.status(400).send({ error: 'Failed to delete user' });
     }
+});
+
+// Example: GET /user/:id
+router.get('/user/:id', async (req, res) => {
+    const users = getUsersCollection();
+    const userId = req.params.id;
+    const user = await users.findOne({ _id: new ObjectId(userId) });
+    if (!user) {
+        return res.status(404).send({ error: 'User not found' });
+    }
+    res.send(user);
 });
 
 export default router;

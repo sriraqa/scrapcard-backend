@@ -26,11 +26,7 @@ async function run() {
             validator: {
                 $jsonSchema: {
                     bsonType: "object",
-                    required: ["id"],
                     properties: {
-                        id: {
-                            bsonType: "string",
-                        },
                         name: {
                             bsonType: "string",
                         },
